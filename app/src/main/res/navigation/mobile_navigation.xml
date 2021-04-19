@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_four_heads">
+
+    <fragment
+        android:id="@+id/nav_four_heads"
+        android:name="com.abdiasgg.punch.ui.fourHeads.FourHeadsFragment"
+        android:label="@string/title_four_heads"
+        tools:layout="@layout/fragment_four_heads" />
+
+    <fragment
+        android:id="@+id/nav_six_eight_heads"
+        android:name="com.abdiasgg.punch.ui.sixEightHeads.SixEightHeadsFragment"
+        android:label="@string/title_six_eight_heads"
+        tools:layout="@layout/fragment_six_eight_heads" />
+
+</navigation>
