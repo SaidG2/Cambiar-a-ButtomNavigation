@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Ponchadores Delta</string>
+    <string name="title_activity_main2">MainActivity</string>
+    <string name="title_four_heads">4 Heads</string>
+    <string name="title_six_eight_heads">6|8 Heads</string>
 </resources>

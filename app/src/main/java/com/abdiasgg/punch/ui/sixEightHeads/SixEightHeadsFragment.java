@@ -1,35 +1,39 @@
-package com.abdiasgg.punch.ui.dashboard;
+package com.abdiasgg.punch.ui.sixEightHeads;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.MutableLiveData;
+import com.abdiasgg.punch.data.CalculateStation;
+import com.abdiasgg.punch.databinding.FragmentSixEightHeadsBinding;
+import com.abdiasgg.punch.ui.utils.FormatStation;
 
-import com.abdiasgg.punch.R;
+public class SixEightHeadsFragment extends Fragment {
 
-public class DashboardFragment extends Fragment {
-
-    private DashboardViewModel dashboardViewModel;
+    private SixEightHeadsViewModel viewModel;
+    private FragmentSixEightHeadsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_six_eight_heads, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
+
+        viewModel = new SixEightHeadsViewModel(
+                new CalculateStation(),
+                new FormatStation(),
+                new MutableLiveData<>());
+
+        binding = FragmentSixEightHeadsBinding.inflate(inflater);
+
+        binding.btnCalculate.setOnClickListener(v -> {
+            viewModel.calculateStations(binding.txtPitch.getText().toString());
         });
-        return root;
+
+        viewModel.getResult().observe(getViewLifecycleOwner(), s -> {
+            binding.tvStations.setText(s);
+        });
+
+        return binding.getRoot();
     }
 }

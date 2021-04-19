@@ -1,35 +1,41 @@
-package com.abdiasgg.punch.ui.home;
+package com.abdiasgg.punch.ui.fourHeads;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.MutableLiveData;
 
-import com.abdiasgg.punch.R;
+import com.abdiasgg.punch.data.CalculateStation;
+import com.abdiasgg.punch.databinding.FragmentFourHeadsBinding;
+import com.abdiasgg.punch.ui.utils.FormatStation;
 
-public class HomeFragment extends Fragment {
+public class FourHeadsFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private FourHeadsViewModel viewModel;
+    private FragmentFourHeadsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_four_heads, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
+
+        viewModel = new FourHeadsViewModel(
+                new CalculateStation(),
+                new FormatStation(),
+                new MutableLiveData<>());
+
+        binding = FragmentFourHeadsBinding.inflate(inflater);
+
+        binding.btnCalculate.setOnClickListener(v -> {
+            viewModel.calculateStations(binding.txtPitch.getText().toString());
         });
-        return root;
+
+        viewModel.getResult().observe(getViewLifecycleOwner(), s -> {
+            binding.tvStations.setText(s);
+        });
+
+        return binding.getRoot();
     }
 }

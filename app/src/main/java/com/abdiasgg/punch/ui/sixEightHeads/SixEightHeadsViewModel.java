@@ -1,19 +1,33 @@
-package com.abdiasgg.punch.ui.dashboard;
+package com.abdiasgg.punch.ui.sixEightHeads;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DashboardViewModel extends ViewModel {
+import com.abdiasgg.punch.data.CalculateStation;
+import com.abdiasgg.punch.ui.utils.FormatStation;
 
+public class SixEightHeadsViewModel extends ViewModel {
+
+    private CalculateStation calculateStation;
+    private FormatStation formatStation;
     private MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+    public SixEightHeadsViewModel(CalculateStation calculateStation, FormatStation formatStation, MutableLiveData<String> mText) {
+        this.calculateStation = calculateStation;
+        this.formatStation = formatStation;
+        this.mText = mText;
     }
 
-    public LiveData<String> getText() {
+    public void calculateStations(String pitch) {
+
+        if (!pitch.trim().isEmpty()) {
+            double[] stations = calculateStation.getStationsSixEightByPitch(Double.parseDouble(pitch));
+            mText.setValue(formatStation.format(stations));
+        }
+    }
+
+    public LiveData<String> getResult() {
         return mText;
     }
 }
